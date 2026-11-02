@@ -1,0 +1,53 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: example
+  namespace: shishika01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+        - name: container
+          image: 'image-registry.openshift-image-registry.svc:5000/openshift/httpd:latest'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+      hostAliases:
+        - hostnames:
+          - sqgw335
+          ip: 172.25.30.25
+        - hostnames:
+          - dummy
+          ip: 127.0.0.1
+        - hostnames:
+          - sqap293
+          ip: 172.25.130.110
+        - hostnames:
+          - spsdummy
+          ip: 127.0.0.1
+        - hostnames:
+          - ysisecpx01
+          ip: 10.212.218.1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
